@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .blog-title {
+            font-size: 1.5rem
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+
+    <h1>Build a Blog</h1>
+
+    {% if blogs|length == 0 %}
+    <p>No blogs yet</p>
+    {% else %}
+
+    <ul>
+        {% for blog in blogs %}
+        <li>
+            <a class="blog-title" href='/blog?id={{blog.id}}'><strong>{{blog.title}}</strong></a>
+            <p>{{blog.body}}</p>
+        </li>
+        <hr />
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+
+{% endblock %}

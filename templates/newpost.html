@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+        textarea {
+            height: 5rem;
+            width: 12rem;
+        }
+        .submit {
+            display: block;
+            margin-top: 2rem;
+            
+        }
+        .blog-title {
+            font-size: 1.5rem
+        }
+        h1 {
+            text-align: center;
+        }
+        .add-blog-wrap {
+            margin-left: 2rem;
+        }
+        .error {
+            font-style: italic;
+            color: red;
+            display: block;
+            font-size: 0.9rem;
+        }
+        p {
+            margin-bottom: 0.25rem;
+            margin-top: 3rem;
+        }
+    </style>
+
+<div class="add-blog-wrap">
+    <h1>Add a Blog Entry</h1>
+
+    <form method='post' action='/newpost'>
+            <label>
+                <p>Title for your new blog:</p>
+                <input type="text" name='blog-title' value="{{ request.form['blog-title'] }}" />
+            </label>
+            <span class="error">{{ title_error }}</span>
+            <label>
+                <p>Your new blog:</p>
+                    <textarea name="blog-body">{{ request.form['blog-body'] }}</textarea>
+            </label>
+            <span class="error">{{ body_error }}</span>
+            <input class="submit" type="submit" value='Add Entry' />
+    </form>
+</div>
+
+{% endblock %}
