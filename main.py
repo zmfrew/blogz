@@ -24,19 +24,30 @@ def input_error(input):
     else:
         return False
 
+@app.route('/')
+def reroute():
+    return redirect('/blog')
+
 @app.route('/blog', methods=['POST', 'GET'])
 def index():
 
+    blog_id = request.args.get('id')
+    if blog_id:
+        blog = Blog.query.get(blog_id)
+        return render_template('blog_display.html',title="Blog Post",blog=blog)
+
+
+    blogs = Blog.query.filter_by().order_by(Blog.id.desc()).all()
+    return render_template('blog.html',title="build-a-blog", 
+        blogs=blogs)
+
+@app.route('/blog?id={{blog.id}}', methods=['POST', 'GET'])
+def display_blog():
     if request.method == 'POST':
         blog_title = request.form['blog-title']
         blog_body = request.form['blog-body']
-        new_blog = Blog(blog_title, blog_body)
-        db.session.add(new_blog)
-        db.session.commit()
 
-    blogs = Blog.query.filter_by().all()
-    return render_template('blog.html',title="build-a-blog", 
-        blogs=blogs)
+    return render_template('blog_display.html',title=blog_title,blog_body=blog_body)
 
 
 @app.route('/newpost', methods=['POST', 'GET'])
@@ -48,6 +59,7 @@ def add_blog():
     if request.method == 'POST':
         blog_title = request.form['blog-title']
         blog_body = request.form['blog-body']
+        new_blog = Blog(blog_title, blog_body)
 
         if input_error(blog_title):
             title_error = "Please fill in the title"
@@ -56,10 +68,11 @@ def add_blog():
             body_error = "Please fill in the body"
 
         if not input_error(blog_title) and not input_error(blog_body):
-            new_blog = Blog(blog_title, blog_body)
             db.session.add(new_blog)
             db.session.commit()
-            return redirect('/blog')
+            new_blog_page = "/blog?id=" + str(new_blog.id)
+            return redirect(new_blog_page)
+            #return redirect('/blog')
 
     return render_template('newpost.html', title="Add a Blog Entry", title_error=title_error, body_error=body_error)
 

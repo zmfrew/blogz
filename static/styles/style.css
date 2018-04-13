@@ -1,0 +1,51 @@
+/* base.html styling */
+a {
+    margin: 2rem 0.5rem;
+}
+
+/* blog.html styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.blog-title {
+    font-size: 1.5rem
+}
+
+h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+/* blog_display.html */
+
+p {
+    margin-left: 0.5rem;
+}
+
+hr {
+    color: rgb(190, 189, 189);
+    opacity: 0.5;
+}
+
+/* newpost.html */
+textarea {
+    height: 5rem;
+    width: 12rem;
+}
+.submit {
+    display: block;
+    margin-top: 2rem;
+}
+
+.add-blog-wrap {
+    margin-left: 2rem;
+}
+.error {
+    font-style: italic;
+    color: red;
+    display: block;
+    font-size: 0.9rem;
+}
