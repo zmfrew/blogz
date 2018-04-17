@@ -49,3 +49,8 @@ textarea {
     display: block;
     font-size: 0.9rem;
 }
+
+.success {
+    color: green;
+    margin-left: 2rem;
+}
