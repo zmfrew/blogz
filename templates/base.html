@@ -6,10 +6,17 @@
     </head>
 <body>
 
-    <div>
-        <a href='/blog'>Main Blog Page</a>
-        <a href='/newpost'>Add a Blog Entry</a>
-    </div>
+    <nav>
+        <div class="nav-left">
+            <a href='/'>Home</a>
+            <a href='/blog'>All Posts</a>
+            <a href='/newpost'>New Post</a>
+        </div>
+        <div class="nav-right">
+            <a href='/login'>Log in</a>
+            <a href='/logout'>Logout</a>
+        </div>
+    </nav>
 
     {% with messages = get_flashed_messages(with_categories=True) %}
         <ul>

@@ -1,6 +1,31 @@
 /* base.html styling */
+body {
+    font-family: sans-serif;
+    width: 50rem;
+    margin: 0 auto;
+    padding: 10px;
+}
+
 a {
     margin: 2rem 0.5rem;
+}
+
+nav {
+    display: flex;
+    padding: 1rem;
+}
+
+.nav-left, .nav-right {
+    display: inline;
+    width: 50%
+}
+
+.nav-left {
+    text-align: left;
+}
+
+.nav-right {
+    text-align: right;
 }
 
 /* blog.html styling */

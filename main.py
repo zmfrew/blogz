@@ -50,6 +50,13 @@ def password_check(pass1, pass2):
     else:
         return False
 
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'signup', 'list_blogs', 'index']
+    if request.endpoint not in allowed_routes and 'username' not in session:
+        return redirect('/login')
+
+# TODO: refactor this to display all usernames
 @app.route('/')
 def reroute():
     return redirect('/blog')
@@ -81,7 +88,6 @@ def signup():
 
         if password_check(password, verify_password):
             verify_password_error = "Passwords don't match. Please try again."
-# TODO: potentially redo this section with error messages in the template
         if not existing_user and not error_check(username) and not error_check(password) and not password_check(password, verify_password):
             new_user = User(username, password)
             db.session.add(new_user)
@@ -110,8 +116,13 @@ def login():
 
     return render_template('login.html')        
 
+@app.route('/logout')
+def logout():
+    del session['username']
+    return redirect('/blog')
+
 @app.route('/blog', methods=['POST', 'GET'])
-def index():
+def list_blogs():
 
     blog_id = request.args.get('id')
     if blog_id:
@@ -120,7 +131,7 @@ def index():
 
 
     blogs = Blog.query.filter_by().order_by(Blog.id.desc()).all()
-    return render_template('blog.html',title="build-a-blog", 
+    return render_template('blog.html',title="blogz", 
         blogs=blogs)
 
 @app.route('/blog?id={{blog.id}}', methods=['POST', 'GET'])
