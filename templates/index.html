@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1 class="blog-title">blog users!</h1>
+
+    {% if blogs|length == 0 %}
+    <p>No blogs yet</p>
+    {% else %}
+    <ul>
+        {% for username in usernames %}
+        <li>
+            <a class="blog-title" href='TBD'><strong>{{username}}</strong></a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+
+{% endblock %}
+
+<!--             <a class="blog-title" href='/blog?user{{blog.owner_id}}'><strong>{{username}}</strong></a>
+-->

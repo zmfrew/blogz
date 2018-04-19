@@ -56,10 +56,18 @@ def require_login():
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
-# TODO: refactor this to display all usernames
 @app.route('/')
-def reroute():
-    return redirect('/blog')
+def index():
+    owner_id = request.args.get('owner_id')
+    if owner_id:
+        blog = Blog.query.get(owner_id)
+        return render_template('blog_display.html',title="Blog Post",blog=blog)
+
+    username_query = db.session.query(User.username).join(Blog).distinct()
+    #removes each username from tuple returned by usernames query
+    usernames = [user[0] for user in username_query]
+    blogs = Blog.query.filter_by().order_by(Blog.owner_id).all()
+    return render_template('index.html', blogs=blogs, usernames=usernames)
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -152,7 +160,9 @@ def add_blog():
     if request.method == 'POST':
         blog_title = request.form['blog-title']
         blog_body = request.form['blog-body']
-        new_blog = Blog(blog_title, blog_body)
+        owner = User.query.filter_by(username=session['username']).first()
+
+        new_blog = Blog(blog_title, blog_body, owner)
 
         if input_error(blog_title):
             title_error = "Please fill in the title"
