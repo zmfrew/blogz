@@ -58,16 +58,8 @@ def require_login():
 
 @app.route('/')
 def index():
-    owner_id = request.args.get('owner_id')
-    if owner_id:
-        blog = Blog.query.get(owner_id)
-        return render_template('blog_display.html',title="Blog Post",blog=blog)
-
-    username_query = db.session.query(User.username).join(Blog).distinct()
-    #removes each username from tuple returned by usernames query
-    usernames = [user[0] for user in username_query]
-    blogs = Blog.query.filter_by().order_by(Blog.owner_id).all()
-    return render_template('index.html', blogs=blogs, usernames=usernames)
+    users = User.query.all()
+    return render_template('index.html', users=users)
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -131,13 +123,19 @@ def logout():
 
 @app.route('/blog', methods=['POST', 'GET'])
 def list_blogs():
+    
+    if 'user' in request.args:
+        user_id = request.args.get('user')
+        user = User.query.get(user_id)
+        blog_list = Blog.query.filter_by(owner=user).all()
+        return render_template('singleUser.html', title=user.username + " posts", blog_list=blog_list)
 
     blog_id = request.args.get('id')
     if blog_id:
         blog = Blog.query.get(blog_id)
         return render_template('blog_display.html',title="Blog Post",blog=blog)
 
-
+    
     blogs = Blog.query.filter_by().order_by(Blog.id.desc()).all()
     return render_template('blog.html',title="blogz", 
         blogs=blogs)
@@ -175,7 +173,6 @@ def add_blog():
             db.session.commit()
             new_blog_page = "/blog?id=" + str(new_blog.id)
             return redirect(new_blog_page)
-            #return redirect('/blog')
 
     return render_template('newpost.html', title="Add a Blog Entry", title_error=title_error, body_error=body_error)
 
