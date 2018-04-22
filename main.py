@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from hashutils import make_pw_hash, check_pw_hash
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -25,12 +26,12 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120))
-    password = db.Column(db.String(120))
+    pw_hash = db.Column(db.String(120))
     blogs = db.relationship('Blog', backref='owner')
 
     def __init__(self, username, password):
         self.username = username
-        self.password = password
+        self.pw_hash = make_pw_hash(password)
 
 def input_error(input):
     if input == "":
@@ -53,17 +54,17 @@ def password_check(pass1, pass2):
 @app.before_request
 def require_login():
     allowed_routes = ['login', 'signup', 'list_blogs', 'index']
-    if request.endpoint not in allowed_routes and 'username' not in session:
+    if request.endpoint not in allowed_routes and 'username' not in session and '/static/' not in request.path:
         return redirect('/login')
 
 @app.route('/')
 def index():
+
     users = User.query.all()
     return render_template('index.html', users=users)
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-
     if request.method == 'POST':
         
         username_error = ""
@@ -107,7 +108,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-        if user and user.password == password:
+        if user and check_pw_hash(password, user.pw_hash):
             session['username'] = username
             flash("Logged in", 'success')
             return redirect('/newpost')
@@ -123,7 +124,6 @@ def logout():
 
 @app.route('/blog', methods=['POST', 'GET'])
 def list_blogs():
-    
     if 'user' in request.args:
         user_id = request.args.get('user')
         user = User.query.get(user_id)
@@ -151,7 +151,6 @@ def display_blog():
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def add_blog():
-
     title_error = ""
     body_error = ""
 
