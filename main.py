@@ -124,6 +124,7 @@ def logout():
 
 @app.route('/blog', methods=['POST', 'GET'])
 def list_blogs():
+    
     if 'user' in request.args:
         user_id = request.args.get('user')
         user = User.query.get(user_id)
