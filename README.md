@@ -2,9 +2,7 @@
 
 
 ## Description 
-Blogz is a web applicatoin that persists and allows users to create accounts, log in, write blogs, and view other user's blogs. Blogz uses Flask, SQLAlechemy, and 
-
-retrieves data In this assignment, we'll refactor and expand our codebase to make this a multi-user blog site. We'll add authentication, so that users have to log in to create posts. Additionally, users will have their own blogs page, and visitors will be able to view blogs by author, or they can view all blog posts on the site by all authors. And we'll still maintain the ability to view an individual blog entry by itself.
+Blogz is a web applicatoin that persists and allows users to create accounts, log in, write blogs, and view other user's blogs. Blogz utilizes Flask, SQLAlechemy, and retrieves data.
 
 ## What I Learned
 
