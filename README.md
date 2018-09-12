@@ -2,14 +2,14 @@
 
 
 ## Description 
-Blogz is a web applicatoin that persists and allows users to create accounts, log in, write blogs, and view other user's blogs. Blogz utilizes Flask, SQLAlechemy, and retrieves data.
+Blogz is a web applicatoin that persists and allows users to create accounts, log in, write blogs, and view other user's blogs. Blogz utilizes Flask, SQLAlechemy, Django, and retrieves data.
 
 ## What I Learned
 
 * Shows basic understanding of building web apps with Python and Flask
 * Setting up and using a database with MAMP
 * How to authenticate users and encrypt passwords with hashing and salting
-* Uses resuable templates to configure views
+* Uses resuable templates to configure views with Django
 * How to use forms and use HTML along with Python
 
 
